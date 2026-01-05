@@ -87,6 +87,6 @@ jobs:
       # https://github.com/sigstore/cosign
       - name: Sign the published Docker image
         if: ${{ github.event_name != 'pull_request' }}
-        env:
-          IMAGE_REF: ${{ env.REGISTRY }}/${{ github.repository }}@${{ steps.build-and-push.outputs.digest }}
-        run: cosign sign --yes "${IMAGE_REF}"
+        run: |
+          # sign for each generated tag: strip the :tag part to form repo@digest
+          echo "${{ steps.meta.outputs.tags }}" | tr ',' '\n' | sed 's/:.*$//' | xargs -I {} cosign sign --yes {}@${{ steps.build-and-push.outputs.digest }}
