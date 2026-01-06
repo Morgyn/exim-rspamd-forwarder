@@ -12,7 +12,7 @@ RUN apk add --no-cache rspamd && \
     chmod 777 /var/log/rspamd && \
     chmod 777 /var/lib/rspamd && \
     touch /etc/rspamd/local.d/options.inc && \
-    chmod 664 /etc/rspamd/local.d/options.inc && \
+    chown exim:exim /etc/rspamd/local.d/options.inc && \
     ln -sf /dev/stdout /var/log/rspamd/rspamd.log
 
 COPY exim.conf /etc/exim/exim.conf
