@@ -11,13 +11,15 @@ RUN apk --no-cache add exim tini && \
 RUN apk add --no-cache rspamd && \
     chmod 777 /var/log/rspamd && \
     chmod 777 /var/lib/rspamd && \
+    touch /etc/rspamd/local.d/options.inc && \
+    chmod 664 /etc/rspamd/local.d/options.inc && \
     ln -sf /dev/stdout /var/log/rspamd/rspamd.log
 
 COPY exim.conf /etc/exim/exim.conf
 COPY start.sh /start.sh
 
-RUN chmod 664 /etc/exim/exim.conf
-RUN chmod 755 /start.sh
+RUN chmod 664 /etc/exim/exim.conf && \
+    chmod 755 /start.sh
 
 USER exim
 EXPOSE 25
